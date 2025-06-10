@@ -5,7 +5,6 @@ import ProductoAdminTable from '../components/ProductoAdminTable';
 
 export default function AdminPage() {
   const { user } = useAuth();
-  console.log(user);
 
   if (!user) {
     return <p className="p-6 text-red-600">Debes iniciar sesión para acceder al panel de administración.</p>;
@@ -22,4 +21,5 @@ export default function AdminPage() {
     </main>
   );
 }
+
 

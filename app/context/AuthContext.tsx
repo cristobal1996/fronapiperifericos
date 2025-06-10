@@ -1,14 +1,13 @@
 'use client';
 
 import { createContext, useState, useContext, useEffect, ReactNode } from 'react';
-import Cookies from 'js-cookie';
 import { jwtDecode } from 'jwt-decode';
 
 interface User {
   id: string;
   email: string;
   rol: string;
-  token: string; // AÑADIR token
+  token: string;
 }
 
 interface AuthContextType {
@@ -23,16 +22,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    const token = Cookies.get('token');
+    const token = localStorage.getItem('token');
     if (token && typeof token === 'string') {
       try {
         const decoded = jwtDecode<any>(token);
         if (decoded?.sub && decoded?.email && decoded?.rol) {
-          setUser({ id: decoded.sub, email: decoded.email, rol: decoded.rol, token }); // AÑADIR token
+          setUser({ id: decoded.sub, email: decoded.email, rol: decoded.rol, token });
         }
       } catch (error) {
         console.error('Token inválido o expirado:', error);
-        Cookies.remove('token');
+        localStorage.removeItem('token');
       }
     }
   }, []);
@@ -43,11 +42,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       return;
     }
 
-    Cookies.set('token', token);
+    localStorage.setItem('token', token);
     try {
       const decoded = jwtDecode<any>(token);
       if (decoded?.sub && decoded?.email && decoded?.rol) {
-        setUser({ id: decoded.sub, email: decoded.email, rol: decoded.rol, token }); // AÑADIR token
+        setUser({ id: decoded.sub, email: decoded.email, rol: decoded.rol, token });
       }
     } catch (error) {
       console.error('Token inválido al iniciar sesión:', error);
@@ -55,7 +54,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const logout = () => {
-    Cookies.remove('token');
+    localStorage.removeItem('token');
     setUser(null);
   };
 
@@ -71,6 +70,7 @@ export const useAuth = () => {
   if (!context) throw new Error('useAuth must be used inside AuthProvider');
   return context;
 };
+
 
 
 

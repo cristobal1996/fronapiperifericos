@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { login as loginService } from '../lib/api'; // Asegúrate de que esta ruta es correcta
+import { login as loginService } from '../lib/api'; 
 import { useAuth } from '../context/AuthContext';
 import { useRouter } from 'next/navigation';
 
@@ -18,7 +18,7 @@ export default function LoginPage() {
       const token = data?.token;
 
       if (typeof token === 'string') {
-        login(token); // Aquí tu contexto manejará la decodificación y persistencia
+        login(token); 
         router.push('/');
       } else {
         alert('Token inválido recibido del servidor.');

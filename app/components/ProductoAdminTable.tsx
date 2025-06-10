@@ -3,13 +3,15 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Image from 'next/image';
-import { useAuth } from '../context/AuthContext'; // IMPORTANTE
+import { useAuth } from '../context/AuthContext';
 
 interface Producto {
   id: string;
   nombre: string;
-  descripcion: string;
   precio: number;
+  descripcion: string;
+  stock: number;
+  tamaño: string;
   imagen: string;
   categoriaCod: string;
 }
@@ -18,13 +20,13 @@ export default function ProductoAdminTable() {
   const [productos, setProductos] = useState<Producto[]>([]);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState<Partial<Producto>>({});
-  const { user } = useAuth(); // USAMOS el contexto de autenticación
+  const { user } = useAuth();
 
   const fetchProductos = async () => {
     try {
-      const res = await axios.get('http://192.168.0.37:3006/api/productos', {
+      const res = await axios.get('http://192.168.1.205:3006/api/productos', {
         headers: {
-          Authorization: `Bearer ${user?.token}`, // Enviamos token
+          Authorization: `Bearer ${user?.token}`,
         },
       });
       setProductos(res.data);
@@ -34,7 +36,6 @@ export default function ProductoAdminTable() {
   };
 
   useEffect(() => {
-    console.log(user)
     if (user?.token) {
       fetchProductos();
     }
@@ -42,7 +43,7 @@ export default function ProductoAdminTable() {
 
   const handleDelete = async (id: string) => {
     try {
-      await axios.delete(`http://192.168.0.37:3006/api/productos/${id}`, {
+      await axios.delete(`http://192.168.1.205:3006/api/productos/${id}`, {
         headers: {
           Authorization: `Bearer ${user?.token}`,
         },
@@ -60,24 +61,49 @@ export default function ProductoAdminTable() {
 
   const handleSave = async () => {
     try {
-      if (editingId) {
-        await axios.patch(`http://192.168.0.37:3006/api/productos/${editingId}`, form, {
-          headers: {
-            Authorization: `Bearer ${user?.token}`,
-          },
-        });
-      } else {
-        await axios.post(`http://192.168.0.37:3006/api/productos`, form, {
-          headers: {
-            Authorization: `Bearer ${user?.token}`,
-          },
-        });
+      const payload = {
+        nombre: form.nombre?.trim() ?? '',
+        precio: Number(form.precio),
+        descripcion: form.descripcion ?? '',
+        stock: Number(form.stock) || 0,
+        tamaño: form.tamaño ?? '',
+        imagen: form.imagen ?? '',
+        categoriaCod: form.categoriaCod?.trim() ?? '',
+      };
+
+      if (!payload.nombre || !payload.categoriaCod) {
+        alert('Nombre y Categoría son obligatorios');
+        return;
       }
+
+      if (editingId) {
+        await axios.patch(
+          `http://192.168.1.205:3006/api/productos/${editingId}`,
+          payload,
+          {
+            headers: {
+              Authorization: `Bearer ${user?.token}`,
+            },
+          }
+        );
+      } else {
+        await axios.post(
+          `http://192.168.1.205:3006/api/productos`,
+          payload,
+          {
+            headers: {
+              Authorization: `Bearer ${user?.token}`,
+            },
+          }
+        );
+      }
+
       setForm({});
       setEditingId(null);
       fetchProductos();
     } catch (err) {
       console.error('Error al guardar producto:', err);
+      alert('Error al guardar producto. Verifica los campos.');
     }
   };
 
@@ -97,7 +123,7 @@ export default function ProductoAdminTable() {
           {productos.map((prod) => (
             <tr key={prod.id} className="border-t">
               <td className="p-2">
-                <Image src={prod.imagen || '/placeholder.png'} alt={prod.nombre} width={50} height={50} />
+                <Image src={prod.imagen || '/placeholder.png'} alt={prod.nombre} width={50} height={50} unoptimized />
               </td>
               <td className="p-2">{prod.nombre}</td>
               <td className="p-2">{prod.precio} €</td>
@@ -110,7 +136,7 @@ export default function ProductoAdminTable() {
         </tbody>
       </table>
 
-      {/* Formulario de edición o creación */}
+      {/* Formulario */}
       <div className="space-y-2">
         <input
           type="text"
@@ -122,8 +148,15 @@ export default function ProductoAdminTable() {
         <input
           type="number"
           placeholder="Precio"
-          value={form.precio || ''}
-          onChange={(e) => setForm({ ...form, precio: parseFloat(e.target.value) })}
+          value={form.precio ?? ''}
+          onChange={(e) => setForm({ ...form, precio: Number(e.target.value) })}
+          className="w-full border p-2"
+        />
+        <input
+          type="number"
+          placeholder="Stock"
+          value={form.stock ?? ''}
+          onChange={(e) => setForm({ ...form, stock: Number(e.target.value) })}
           className="w-full border p-2"
         />
         <input
@@ -138,6 +171,13 @@ export default function ProductoAdminTable() {
           placeholder="URL Imagen"
           value={form.imagen || ''}
           onChange={(e) => setForm({ ...form, imagen: e.target.value })}
+          className="w-full border p-2"
+        />
+        <input
+          type="text"
+          placeholder="Tamaño"
+          value={form.tamaño || ''}
+          onChange={(e) => setForm({ ...form, tamaño: e.target.value })}
           className="w-full border p-2"
         />
         <input
@@ -157,4 +197,6 @@ export default function ProductoAdminTable() {
     </div>
   );
 }
+
+
 
