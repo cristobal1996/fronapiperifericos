@@ -5,6 +5,7 @@ import axios from 'axios';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useAuth } from '../app/context/AuthContext';
+import { actualizarCarrito } from '../app/lib/api';
 
 interface Producto {
   id: string;
@@ -30,12 +31,12 @@ export default function Home() {
   const { user, logout } = useAuth();
 
   useEffect(() => {
-    axios.get('http://192.168.1.205:3006/api/categorias/con-productos').then((res) => {
+    axios.get('http://192.168.0.37:3007/api/categorias/con-productos').then((res) => {
       setCategorias(res.data);
       if (res.data.length > 0) setCategoriaActiva(res.data[0].cod);
     });
 
-    axios.get('http://192.168.1.205:3006/api/productos').then((res) => {
+    axios.get('http://192.168.0.37:3007/api/productos').then((res) => {
       const productos = res.data ?? [];
       const seleccionados = productos.sort(() => 0.5 - Math.random()).slice(0, 15);
       setProductosAleatorios(seleccionados);
@@ -44,9 +45,34 @@ export default function Home() {
 
   const categoria = categorias.find((cat) => cat.cod === categoriaActiva);
 
+  const handleAgregarCarrito = async (productoId: string) => {
+    if (!user || !user.token) {
+      alert('Debes iniciar sesión para comprar.');
+      return;
+    }
+
+    const carritoId = localStorage.getItem('carritoId');
+    if (!carritoId) {
+      alert('Carrito no encontrado');
+      return;
+    }
+
+    try {
+      await actualizarCarrito({
+        carritoId,
+        token: user.token,
+        productoId,
+        cantidad: 1,
+      });
+      alert('Producto añadido al carrito');
+    } catch (err) {
+      console.error('Error al agregar al carrito:', err);
+      alert('No se pudo agregar al carrito');
+    }
+  };
+
   return (
     <main className="min-h-screen bg-gray-50">
-      {/* Encabezado */}
       <header className="bg-white shadow p-6 flex flex-col md:flex-row justify-between items-center">
         <h1
           className="text-3xl font-bold text-blue-700 cursor-pointer"
@@ -54,6 +80,7 @@ export default function Home() {
         >
           Click & Connect
         </h1>
+
         <div className="flex items-center gap-4 mt-4 md:mt-0">
           {categorias.map((cat) => (
             <button
@@ -63,16 +90,23 @@ export default function Home() {
                 setMostrarScroll(false);
               }}
               className={`font-medium ${
-                categoriaActiva === cat.cod ? 'text-blue-600 underline' : 'text-gray-700 hover:text-blue-600'
+                categoriaActiva === cat.cod
+                  ? 'text-blue-600 underline'
+                  : 'text-gray-700 hover:text-blue-600'
               }`}
             >
               {cat.nombre}
             </button>
           ))}
         </div>
-        <div className="mt-4 md:mt-0">
+
+        <div className="mt-4 md:mt-0 flex items-center gap-4">
+          <Link href="/carrito" className="text-blue-600 hover:underline">
+            🛒 Carrito
+          </Link>
+
           {user ? (
-            <div className="flex items-center gap-4">
+            <>
               <span className="text-gray-700">Hola, {user.email}</span>
               {user.rol === 'admin' && (
                 <Link href="/admin" className="text-green-600 hover:underline">
@@ -82,21 +116,20 @@ export default function Home() {
               <button onClick={logout} className="text-red-600 hover:underline">
                 Cerrar sesión
               </button>
-            </div>
+            </>
           ) : (
-            <div className="flex items-center gap-4">
+            <>
               <Link href="/login" className="text-blue-600 hover:underline">
                 Entrar
               </Link>
               <Link href="/register" className="text-blue-600 hover:underline">
                 Registrarse
               </Link>
-            </div>
+            </>
           )}
         </div>
       </header>
 
-      {/* Scroll de productos destacados */}
       {mostrarScroll && (
         <div className="p-6">
           <h2 className="text-2xl font-bold text-gray-800 mb-4">Productos Destacados</h2>
@@ -118,7 +151,6 @@ export default function Home() {
         </div>
       )}
 
-      {/* Productos por categoría activa */}
       {!mostrarScroll && categoria && (
         <div className="p-6">
           <h2 className="text-2xl font-semibold text-gray-800 mb-4 border-b pb-2">
@@ -139,7 +171,10 @@ export default function Home() {
                   <p className="text-sm text-gray-600 flex-grow">{prod.descripcion}</p>
                   <p className="text-blue-600 font-semibold mt-1">{prod.precio} €</p>
                   <div className="mt-4 flex justify-between">
-                    <button className="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700">
+                    <button
+                      className="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700"
+                      onClick={() => handleAgregarCarrito(prod.id)}
+                    >
                       Comprar
                     </button>
                     <button className="text-blue-600 hover:underline">Ver más</button>
@@ -155,16 +190,4 @@ export default function Home() {
     </main>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
 

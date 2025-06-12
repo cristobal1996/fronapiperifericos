@@ -1,14 +1,25 @@
 {
     "cSpell.words": [
+        "accion",
+        "actualizar",
+        "AGREGAR",
         "Aleatorios",
+        "cantidad",
+        "Carrito",
+        "carritos",
         "categoria",
         "categorias",
         "descripcion",
+        "eliminar",
         "imagen",
         "nombre",
+        "nueva",
+        "obtener",
         "precio",
         "Producto",
         "Productos",
-        "seleccionados"
+        "seleccionados",
+        "tamaño",
+        "usuario"
     ]
 }
