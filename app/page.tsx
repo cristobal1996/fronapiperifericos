@@ -31,12 +31,12 @@ export default function Home() {
   const { user, logout } = useAuth();
 
   useEffect(() => {
-    axios.get('http://192.168.0.37:3007/api/categorias/con-productos').then((res) => {
+    axios.get('http://192.168.0.37:3009/api/categorias/con-productos').then((res) => {
       setCategorias(res.data);
       if (res.data.length > 0) setCategoriaActiva(res.data[0].cod);
     });
 
-    axios.get('http://192.168.0.37:3007/api/productos').then((res) => {
+    axios.get('http://192.168.0.37:3009/api/productos').then((res) => {
       const productos = res.data ?? [];
       const seleccionados = productos.sort(() => 0.5 - Math.random()).slice(0, 15);
       setProductosAleatorios(seleccionados);

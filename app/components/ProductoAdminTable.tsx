@@ -24,7 +24,7 @@ export default function ProductoAdminTable() {
 
   const fetchProductos = async () => {
     try {
-      const res = await axios.get('http://192.168.0.37:3007/api/productos', {
+      const res = await axios.get('http://192.168.0.37:3009/api/productos', {
         headers: {
           Authorization: `Bearer ${user?.token}`,
         },
@@ -43,7 +43,7 @@ export default function ProductoAdminTable() {
 
   const handleDelete = async (id: string) => {
     try {
-      await axios.delete(`http://192.168.0.37:3007/api/productos/${id}`, {
+      await axios.delete(`http://192.168.0.37:3009/api/productos/${id}`, {
         headers: {
           Authorization: `Bearer ${user?.token}`,
         },
@@ -78,7 +78,7 @@ export default function ProductoAdminTable() {
 
       if (editingId) {
         await axios.patch(
-          `http://192.168.0.37:3007/api/productos/${editingId}`,
+          `http://192.168.0.37:3009/api/productos/${editingId}`,
           payload,
           {
             headers: {
@@ -88,7 +88,7 @@ export default function ProductoAdminTable() {
         );
       } else {
         await axios.post(
-          `http://192.168.0.37:3007/api/productos`,
+          `http://192.168.0.37:3009/api/productos`,
           payload,
           {
             headers: {

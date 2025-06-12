@@ -1,7 +1,7 @@
 // lib/axiosInstance.ts
 import axios from 'axios';
 
-const API_URL = 'http://192.168.0.37:3007/api';
+const API_URL = 'http://192.168.0.37:3009/api';
 
 const axiosInstance = axios.create({
   baseURL: API_URL,
