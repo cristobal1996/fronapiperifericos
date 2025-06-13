@@ -100,18 +100,18 @@ export default function CarritoPage() {
               <div className="flex-grow">
                 <h3 className="font-semibold">{item.producto.nombre}</h3>
                 <p className="text-gray-600">{item.producto.descripcion}</p>
-                <p className="text-blue-600 font-semibold">{item.producto.precio} €</p>
+                <p className=" font-semibold">{item.producto.precio} €</p>
               </div>
               <div className="flex items-center gap-4">
                 <button
-                  className="bg-blue-600 text-white px-2 py-1 rounded hover:bg-blue-700"
+                  className=" text-white px-2 py-1 rounded "
                   onClick={() => handleCantidadChange(item.producto.id, item.cantidad + 1)}
                 >
                   +
                 </button>
                 <span>{item.cantidad}</span>
                 <button
-                  className="bg-blue-600 text-white px-2 py-1 rounded hover:bg-blue-700"
+                  className=" text-white px-2 py-1 rounded "
                   onClick={() => handleCantidadChange(item.producto.id, item.cantidad - 1)}
                 >
                   -

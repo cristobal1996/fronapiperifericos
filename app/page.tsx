@@ -1,5 +1,5 @@
 'use client';
-
+import './globals.css';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
@@ -72,57 +72,58 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow p-6 flex flex-col md:flex-row justify-between items-center">
+    <main className="min-h-screen">
+      <header className="shadow p-6 flex flex-col md:flex-row justify-between items-center">
         <h1
-          className="text-3xl font-bold text-blue-700 cursor-pointer"
+          className="text-3xl font-bold cursor-pointer"
           onClick={() => setMostrarScroll(!mostrarScroll)}
         >
           Click & Connect
         </h1>
 
-        <div className="flex items-center gap-4 mt-4 md:mt-0">
-          {categorias.map((cat) => (
-            <button
-              key={cat.cod}
-              onClick={() => {
-                setCategoriaActiva(cat.cod);
-                setMostrarScroll(false);
-              }}
-              className={`font-medium ${
-                categoriaActiva === cat.cod
-                  ? 'text-blue-600 underline'
-                  : 'text-gray-700 hover:text-blue-600'
-              }`}
-            >
-              {cat.nombre}
-            </button>
-          ))}
-        </div>
+    <div className="flex items-center gap-4 mt-4 md:mt-0">
+        {categorias.map((cat) => (
+      <button
+        key={cat.cod}
+        onClick={() => {
+        setCategoriaActiva(cat.cod);
+        setMostrarScroll(false);
+      }}
+        className={`font-medium transition-colors duration-300 ${
+        categoriaActiva === cat.cod
+          ? 'text-white'
+          : 'text-black'
+      }`}
+      >
+        {cat.nombre}
+      </button>
+      ))}
+    </div>
+
 
         <div className="mt-4 md:mt-0 flex items-center gap-4">
-          <Link href="/carrito" className="text-blue-600 hover:underline">
-            🛒 Carrito
+          <Link href="/carrito">
+             Carrito
           </Link>
 
           {user ? (
             <>
               <span className="text-gray-700">Hola, {user.email}</span>
               {user.rol === 'admin' && (
-                <Link href="/admin" className="text-green-600 hover:underline">
+                <Link href="/admin" className="text-green-600">
                   Panel Admin
                 </Link>
               )}
-              <button onClick={logout} className="text-red-600 hover:underline">
+              <button onClick={logout} className="text-red-600">
                 Cerrar sesión
               </button>
             </>
           ) : (
             <>
-              <Link href="/login" className="text-blue-600 hover:underline">
+              <Link href="/login">
                 Entrar
               </Link>
-              <Link href="/register" className="text-blue-600 hover:underline">
+              <Link href="/register" >
                 Registrarse
               </Link>
             </>
@@ -135,16 +136,14 @@ export default function Home() {
           <h2 className="text-2xl font-bold text-gray-800 mb-4">Productos Destacados</h2>
           <div className="overflow-x-auto whitespace-nowrap flex gap-6 pb-4">
             {productosAleatorios.map((prod) => (
-              <div key={prod.id} className="bg-white rounded-lg shadow p-4 min-w-[320px] max-w-xs">
+              <div key={prod.id} >
                 <Image
                   src={prod.imagen || '/placeholder.png'}
                   alt={prod.nombre}
-                  width={300}
-                  height={200}
+                  width={500}
+                  height={500}
                   className="rounded-lg object-cover w-full h-48"
                 />
-                <h3 className="text-lg font-semibold mt-2">{prod.nombre}</h3>
-                <p className="text-blue-600 font-semibold">{prod.precio} €</p>
               </div>
             ))}
           </div>
@@ -168,8 +167,7 @@ export default function Home() {
                     className="object-cover w-full h-48 rounded"
                   />
                   <h3 className="text-lg font-bold mt-2">{prod.nombre}</h3>
-                  <p className="text-sm text-gray-600 flex-grow">{prod.descripcion}</p>
-                  <p className="text-blue-600 font-semibold mt-1">{prod.precio} €</p>
+                  <p className="font-semibold mt-1">{prod.precio} €</p>
                   <div className="mt-4 flex justify-between">
                     <button
                       className="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700"
@@ -177,7 +175,7 @@ export default function Home() {
                     >
                       Comprar
                     </button>
-                    <button className="text-blue-600 hover:underline">Ver más</button>
+                    <button className="hover:underline">Ver más</button>
                   </div>
                 </div>
               ))}

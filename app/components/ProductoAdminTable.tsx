@@ -124,7 +124,7 @@ export default function ProductoAdminTable() {
   };
 
   return (
-    <div className="p-4 bg-white shadow rounded-lg">
+    <div>
       <h2 className="text-xl font-bold mb-4">Gestión de Productos</h2>
 
       {error && (

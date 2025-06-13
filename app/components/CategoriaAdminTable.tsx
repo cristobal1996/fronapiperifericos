@@ -123,7 +123,7 @@ export default function CategoriaAdminTable() {
   };
 
   return (
-    <div className="bg-white p-4 shadow rounded-lg">
+    <div>
       {error && (
         <div className="mb-4 p-2 bg-red-100 text-red-700 border border-red-300 rounded">
           {error}

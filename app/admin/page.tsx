@@ -24,19 +24,19 @@ export default function AdminPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-50 p-6">
-      <h1 className="text-3xl font-bold mb-6 text-center text-blue-700">Panel de Administración</h1>
+    <main className="min-h-screen">
+      <h1 className="text-3xl font-bold mb-6 text-center ">Panel de Administración</h1>
 
       <div className="flex justify-center gap-4 mb-6">
         <button
           onClick={() => setView('productos')}
-          className={`px-4 py-2 rounded ${view === 'productos' ? 'bg-blue-600 text-white' : 'bg-white border text-blue-600'}`}
+          className={`px-4 py-2 rounded ${view === 'productos' ? ' text-white' : 'bg-white border '}`}
         >
           Productos
         </button>
         <button
           onClick={() => setView('categorias')}
-          className={`px-4 py-2 rounded ${view === 'categorias' ? 'bg-blue-600 text-white' : 'bg-white border text-blue-600'}`}
+          className={`px-4 py-2 rounded ${view === 'categorias' ? ' text-white' : 'bg-white border '}`}
         >
           Categorías
         </button>

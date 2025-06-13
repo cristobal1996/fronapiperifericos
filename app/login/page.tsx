@@ -31,7 +31,7 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-gray-100">
+    <main className="min-h-screen flex items-center justify-center">
       <form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow w-full max-w-sm">
         <h2 className="text-xl font-bold mb-4 text-center">Iniciar Sesión</h2>
         <input
