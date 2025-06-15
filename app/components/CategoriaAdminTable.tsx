@@ -18,7 +18,7 @@ export default function CategoriaAdminTable() {
   const [error, setError] = useState<string | null>(null);
 
   const { user } = useAuth(); // Obtenemos el token del usuario
-  const API_URL = 'http://192.168.0.37:3009/api/categorias';
+  const API_URL = 'http://192.168.0.37:3008/api/categorias';
 
   const fetchCategorias = async () => {
     setLoading(true);

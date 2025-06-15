@@ -24,7 +24,7 @@ export default function ProductoAdminTable() {
   const [error, setError] = useState<string | null>(null);
   const { user } = useAuth();
 
-  const API_URL = 'http://192.168.0.37:3009/api/productos';
+  const API_URL = 'http://192.168.0.37:3008/api/productos';
 
   const fetchProductos = async () => {
     setLoading(true);
