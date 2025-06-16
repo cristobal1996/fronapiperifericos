@@ -2,7 +2,7 @@
 
 import { createContext, useState, useContext, useEffect, ReactNode } from 'react';
 import { jwtDecode } from 'jwt-decode';
-import { obtenerCarrito } from '../lib/api'; // Asegúrate que la ruta sea correcta
+import { obtenerCarrito } from '../lib/api'; 
 
 interface User {
   id: string;
@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           };
           setUser(usuario);
 
-          // Obtener y guardar el carrito al cargar desde token
+          
           obtenerCarrito(usuario.id, token)
             .then((carrito) => {
               localStorage.setItem('carritoId', carrito.id);
@@ -73,7 +73,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         };
         setUser(usuario);
 
-        // Obtener y guardar el carrito al iniciar sesión
+        
         try {
           const carrito = await obtenerCarrito(usuario.id, token);
           localStorage.setItem('carritoId', carrito.id);

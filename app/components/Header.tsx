@@ -28,7 +28,7 @@ export default function Header() {
   const { user, logout } = useAuth();
 
   useEffect(() => {
-    axios.get('http://192.168.0.37:3008/api/categorias').then((res) => {
+    axios.get('http://192.168.8.205:3008/api/categorias').then((res) => {
       setCategorias(res.data);
       if (!categoriaActiva && res.data.length > 0) {
         setCategoriaActiva(res.data[0].cod);

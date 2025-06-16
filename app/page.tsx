@@ -32,7 +32,7 @@ export default function HomePage() {
   const categoria = categorias.find((cat) => cat.cod === categoriaActiva);
 
   useEffect(() => {
-    axios.get('http://192.168.0.37:3008/api/categorias/con-productos').then((res) => {
+    axios.get('http://192.168.8.205:3008/api/categorias/con-productos').then((res) => {
       setCategorias(res.data);
     });
   }, []);

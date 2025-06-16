@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useAuth } from '../context/AuthContext'; // Asegúrate de que esta ruta sea correcta
+import { useAuth } from '../context/AuthContext'; 
 
 interface Categoria {
   cod: string;
@@ -17,14 +17,14 @@ export default function CategoriaAdminTable() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const { user } = useAuth(); // Obtenemos el token del usuario
-  const API_URL = 'http://192.168.0.37:3008/api/categorias';
+  const { user } = useAuth(); 
+  const API_URL = 'http://192.168.8.205:3008/api/categorias';
 
   const fetchCategorias = async () => {
     setLoading(true);
     setError(null);
     try {
-      const res = await axios.get(API_URL); // pública
+      const res = await axios.get(API_URL); 
       setCategorias(res.data);
     } catch (err) {
       setError('Error al obtener categorías');

@@ -1,4 +1,3 @@
-// app/layout.tsx
 import './globals.css';
 import { AuthProvider } from './context/AuthContext';
 import { CategoriaProvider } from './context/CategoriaContext';

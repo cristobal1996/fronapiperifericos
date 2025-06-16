@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://192.168.0.37:3008/api';
+const API_URL = 'http://192.168.8.205:3008/api';
 
 export const login = async (email: string, password: string) => {
   const res = await axios.post(`${API_URL}/auth/login`, { email, password });
@@ -16,7 +16,7 @@ export const register = async (dto: {
   return res.data;
 };
 
-// Función para actualizar el carrito
+
 export const actualizarCarrito = async ({
   carritoId,
   token,
@@ -39,7 +39,7 @@ export const actualizarCarrito = async ({
         {
           productoId,
           cantidad,
-          accion: 'agregar', // ✅ en minúscula
+          accion: 'agregar', 
         },
       ],
     },
@@ -67,7 +67,7 @@ export const eliminarProductoDelCarrito = async ({
       productos: [
         {
           productoId,
-          accion: 'eliminar', // ✅ válido según DTO
+          accion: 'eliminar', 
         },
       ],
     },
@@ -80,7 +80,7 @@ export const eliminarProductoDelCarrito = async ({
   return res.data;
 };
 
-// Obtener el carrito por usuario ID
+
 export const obtenerCarrito = async (usuarioId: string, token: string) => {
   if (!usuarioId || !token) {
     throw new Error('Faltan datos para obtener el carrito');
